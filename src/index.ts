@@ -13,6 +13,25 @@
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World! 2');
+		if (request.method === 'GET') {
+			return getConfigs();
+		}
+
+		return getItems();
+
+		async function getItems(): Promise<Response> {
+			return new Response('Other Request');
+		}
+
+		async function getConfigs(): Promise<Response> {
+			const url = 'https://www2.susep.gov.br/menuestatistica/SES/balanco.aspx?tipo=seg&id=14';
+			const req = await fetch(url);
+
+			return new Response(
+				JSON.stringify({
+					company: [{ code: '05495', name: 'ZURICH MINAS BRASIL SEGUROS S.A.' }],
+				})
+			);
+		}
 	},
 } satisfies ExportedHandler<Env>;
