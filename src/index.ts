@@ -14,11 +14,19 @@ import * as cheerio from 'cheerio';
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
+		let response;
+
 		if (request.method === 'GET') {
-			return getConfigs();
+			response = await getConfigs();
 		}
 
-		return getItems();
+		response = await getItems();
+
+		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
+		response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allowed methods
+		response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
+
+		return response;
 
 		async function getItems(): Promise<Response> {
 			return new Response('Other Request');
@@ -55,7 +63,7 @@ export default {
 			return new Response(
 				JSON.stringify({
 					companies,
-					types
+					types,
 				})
 			);
 		}
