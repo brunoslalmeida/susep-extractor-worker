@@ -10,6 +10,7 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+import * as cheerio from 'cheerio';
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
@@ -26,10 +27,35 @@ export default {
 		async function getConfigs(): Promise<Response> {
 			const url = 'https://www2.susep.gov.br/menuestatistica/SES/balanco.aspx?tipo=seg&id=14';
 			const req = await fetch(url);
+			const $ = cheerio.load(await req.text());
+			const a = $('#ctl00_ContentPlaceHolder1_edEmpresas option');
+
+			const companies = [];
+
+			for (let i = 0; i < a.length; i++) {
+				const element = a[i];
+				const code = element.attribs.value.trim();
+				let name = <string>(<any>element.children[0]).data;
+				if (name.includes(' - ')) name = name.split(' - ')[1].trim();
+				companies.push({ code, name });
+			}
+
+			const b = $('#ctl00_ContentPlaceHolder1_edDemonstracao option');
+			const types = [];
+			for (let i = 0; i < b.length; i++) {
+				const element = b[i];
+				const code = element.attribs.value.trim();
+				const value = <string>(<any>element.children[0]).data;
+				types.push({
+					code,
+					value,
+				});
+			}
 
 			return new Response(
 				JSON.stringify({
-					company: [{ code: '05495', name: 'ZURICH MINAS BRASIL SEGUROS S.A.' }],
+					companies,
+					types
 				})
 			);
 		}
