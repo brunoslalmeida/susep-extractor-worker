@@ -10,61 +10,38 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-import * as cheerio from 'cheerio';
+
+import { getBase, getReport } from './api';
+import { params } from './config';
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
+	async fetch(request): Promise<Response> {
 		let response;
 
 		if (request.method === 'GET') {
-			response = await getConfigs();
+			response = await returnParams();
 		} else {
-			response = await getItems();
+			const params = await request.json<{ company: string; type: '22A' | '22P' | '23'; month: string }>();
+			response = await returnReport(params);
 		}
 
-		response.headers.set('Access-Control-Allow-Origin', 'https://susep-extractor-angular.pages.dev'); // Allow all origins (for testing, be specific in production)
+		// response.headers.set('Access-Control-Allow-Origin', 'https://susep-extractor-angular.pages.dev'); // Allow all origins (for testing, be specific in production)
+		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Methods', 'GET, POST'); // Allowed methods
+		response.headers.set('Access-Control-Allow-Headers', '*'); // Allow all origins (for testing, be specific in production)
 
 		return response;
 
-		async function getItems(): Promise<Response> {
-			return new Response('Other Request');
+		async function returnParams(): Promise<Response> {
+			return new Response(JSON.stringify({ ...params }));
 		}
 
-		async function getConfigs(): Promise<Response> {
-			const url = 'https://www2.susep.gov.br/menuestatistica/SES/balanco.aspx?tipo=seg&id=14';
-			const req = await fetch(url);
-			const $ = cheerio.load(await req.text());
-			const a = $('#ctl00_ContentPlaceHolder1_edEmpresas option');
+		async function returnReport(params: { company: string; type: '22A' | '22P' | '23'; month: string }): Promise<Response> {
+			await getBase(); //Make sure to have cookie
 
-			const companies = [];
+			const text = await getReport(params.company, params.month, params.type);
 
-			for (let i = 0; i < a.length; i++) {
-				const element = a[i];
-				const code = element.attribs.value.trim();
-				let name = <string>(<any>element.children[0]).data;
-				if (name.includes(' - ')) name = name.split(' - ')[1].trim();
-				companies.push({ code, name });
-			}
-
-			const b = $('#ctl00_ContentPlaceHolder1_edDemonstracao option');
-			const types = [];
-			for (let i = 0; i < b.length; i++) {
-				const element = b[i];
-				const code = element.attribs.value.trim();
-				const value = <string>(<any>element.children[0]).data;
-				types.push({
-					code,
-					value,
-				});
-			}
-
-			return new Response(
-				JSON.stringify({
-					companies,
-					types,
-				})
-			);
+			return new Response(text);
 		}
 	},
 } satisfies ExportedHandler<Env>;
