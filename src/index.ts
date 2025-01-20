@@ -16,18 +16,18 @@ import { params } from './config';
 
 export default {
 	async fetch(request): Promise<Response> {
-		let response;
+		let response = new Response('');
 
-		if (request.method === 'GET') {
-			response = await returnParams();
-		} else {
+		if (request.method === 'GET') response = await returnParams();
+
+		if (request.method === 'POST') {
 			const params = await request.json<{ company: string; type: '22A' | '22P' | '23'; month: string }>();
 			response = await returnReport(params);
 		}
 
 		// response.headers.set('Access-Control-Allow-Origin', 'https://susep-extractor-angular.pages.dev'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
-		response.headers.set('Access-Control-Allow-Methods', '*', ); // Allowed methods
+		response.headers.set('Access-Control-Allow-Methods', '*'); // Allowed methods
 		response.headers.set('Access-Control-Allow-Headers', '*'); // Allow all origins (for testing, be specific in production)
 
 		return response;
