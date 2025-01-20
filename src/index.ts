@@ -27,7 +27,7 @@ export default {
 
 		// response.headers.set('Access-Control-Allow-Origin', 'https://susep-extractor-angular.pages.dev'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
-		response.headers.set('Access-Control-Allow-Methods', 'GET, POST'); // Allowed methods
+		response.headers.set('Access-Control-Allow-Methods', '*', ); // Allowed methods
 		response.headers.set('Access-Control-Allow-Headers', '*'); // Allow all origins (for testing, be specific in production)
 
 		return response;
