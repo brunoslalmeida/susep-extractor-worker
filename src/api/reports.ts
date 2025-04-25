@@ -1,7 +1,7 @@
 import { load, CheerioAPI } from 'cheerio';
 import { createFormData, doPost, baseURL } from './api';
 
-export async function getReport(company: string, month: string, type: '22A' | '22P' | '23') {
+export async function getResseguroReport(company: string, month: string, type: '22A' | '22P' | '23') {
 	const params = {
 		'ctl00%24ContentPlaceHolder1%24edEmpresas': company,
 		'ctl00%24ContentPlaceHolder1%24edDemonstracao': type,
