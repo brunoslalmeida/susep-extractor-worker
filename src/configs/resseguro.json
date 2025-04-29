@@ -1,0 +1,30 @@
+{
+    "companies": [
+        {"code": "Todas", "name": "Todas"},
+        {"code": "38741+++++", "name": "AIG RESSEGUROS BRASIL S.A."},
+        {"code": "30074+++++", "name": "ALLIANZ GLOBAL CORPORATE &amp; SPECIALTY RESSEGUROS BRASIL S.A."},
+        {"code": "34819+++++", "name": "AUSTRAL RESSEGURADORA S.A."},
+        {"code": "39764+++++", "name": "AUSTRAL RESSEGUROS ESPECIAIS S.A."},
+        {"code": "36099+++++", "name": "AXA XL RESSEGUROS S.A."},
+        {"code": "37052+++++", "name": "BTG PACTUAL RESSEGURADORA S.A."},
+        {"code": "38253+++++", "name": "CHUBB RESSEGURADORA BRASIL S.A."},
+        {"code": "31623+++++", "name": "IRB BRASIL RESSEGUROS S/A"},
+        {"code": "38873+++++", "name": "JUNTO RESSEGUROS S.A."},
+        {"code": "33294+++++", "name": "MAPFRE RE DO BRASIL COMPANHIA DE RESSEGUROS"} ,
+        {"code": "37729+++++", "name": "MUNICH RE DO BRASIL RESSEGURADORA S.A."},
+        {"code": "31551+++++", "name": "SCOR BRASIL RESSEGUROS S.A."},
+        {"code": "37753+++++", "name": "SOMPO RESSEGURADORA S.A."},
+        {"code": "38270+++++", "name": "SWISS RE BRASIL RESSEGUROS S/A"},
+        {"code": "30201+++++", "name": "TERRA BRASIS RESSEGUROS S.A."},
+        {"code": "34665+++++", "name": "XL RESSEGUROS BRASIL S.A."},
+        {"code": "32875+++++", "name": "ZURICH RESSEGURADORA BRASIL S.A."}
+    ],
+    "types": [
+        { "code": "22A", "value": "ATIVO"},
+        { "code": "22P", "value": "PASSIVO"},
+        { "code": "23", "value": "DEMONSTRAÇÃO DO RESULTADO DO EXERCÍCIO - DRE"}          
+    ]
+    
+}
+
+	

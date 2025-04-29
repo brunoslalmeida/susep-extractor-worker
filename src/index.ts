@@ -11,48 +11,42 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { getBase, getResseguroReport } from './api';
-import { params } from './config';
+import { getResseguroReport, getSeguroReport } from './api';
+import { resseguroConfig, seguroConfig } from './configs';
 
 export default {
 	async fetch(request): Promise<Response> {
-		let response = new Response('');
+		let response = new Response('Invalid endpoint', { status: 404 });
+		
+		console.log('Request received: ', request.url, request.method);
+		
+		const url = new URL(request.url);
+		if (url.pathname == '/resseguro') {
+			if (request.method === 'GET') 
+				response = new Response(JSON.stringify({ ...resseguroConfig }));
 
-		if (request.method === 'GET') response = await returnParams();
-
-		if (request.method === 'POST') {
-			const url = new URL(request.url);
-
-			if (url.pathname == '/resseguro') {
-				const params = await request.json<{ company: string; type: '22A' | '22P' | '23'; month: string }>();
-				response = await returnResseguroReport(params);
-			}
-			else if (url.pathname == '/seguro') {
-				response = new Response('Invalid Not Implemented YET', { status: 404 });
-
-			}
-			else {
-				response = new Response('Invalid endpoint', { status: 404 });
+			if (request.method === 'POST') {
+				const params = await request.json() as { company: string; type: '22A' | '22P' | '23'; month: string };
+				const text = await getResseguroReport(params.company, params.month, params.type);
+				response = new Response(text);
 			}
 		}
 
-		// response.headers.set('Access-Control-Allow-Origin', 'https://susep-extractor-angular.pages.dev'); // Allow all origins (for testing, be specific in production)
+		else if (url.pathname == '/seguro') {
+			if (request.method === 'GET') 
+				response = new Response(JSON.stringify({ ...seguroConfig }));
+
+			if (request.method === 'POST') {
+				const params = await request.json() as { company: string; type: '22A' | '22P' | '23'; month: string };
+				const text = await getSeguroReport(params.company, params.month, params.type);
+				response = new Response(text);
+			}
+		}
+
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Methods', '*'); // Allowed methods
 		response.headers.set('Access-Control-Allow-Headers', '*'); // Allow all origins (for testing, be specific in production)
 
 		return response;
-
-		async function returnParams(): Promise<Response> {
-			return new Response(JSON.stringify({ ...params }));
-		}
-
-		async function returnResseguroReport(params: { company: string; type: '22A' | '22P' | '23'; month: string }): Promise<Response> {
-			await getBase(); //Make sure to have cookie
-
-			const text = await getResseguroReport(params.company, params.month, params.type);
-
-			return new Response(text);
-		}
 	},
 } satisfies ExportedHandler<Env>;

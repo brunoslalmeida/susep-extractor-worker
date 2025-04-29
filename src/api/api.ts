@@ -1,7 +1,7 @@
 import { CheerioAPI } from 'cheerio';
 
-export const baseURL = 'https://www2.susep.gov.br/menuestatistica/SES/balanco.aspx?tipo=seg&id=14';
-// export const baseURL = 'http://127.0.0.1:8080/menuestatistica/SES/balanco.aspx?tipo=seg&id=14';
+const domain = 'www2.susep.gov.br';
+export const baseURL = `https:/${domain}/`;
 
 let cookie: string | null = null;
 
@@ -13,33 +13,32 @@ const formSecure = {
 
 const headers = {
 	Cookie: '',
-	Host: 'www2.susep.gov.br',
-	Origin: 'https://www2.susep.gov.br',
-	Referer: 'https://www2.susep.gov.br/menuestatistica/SES/balanco.aspx?tipo=seg&id=14',
+	Host: domain,
+	Origin: baseURL,
 	Accept:
 		'text/html,application/xhtml+xml,application/xml,q=0.9,image/avif,image/webp,image/apng,*/*,q=0.8,application/signed-exchange,v=b3,q=0.7',
-	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0, Win64, x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.160 Safari/537.36',
-	'Sec-Fetch-Site': 'same-origin',
-	'Sec-Fetch-Mode': 'navigate',
-	'Sec-Fetch-User': '?1',
-	'Sec-Fetch-Dest': 'document',
-	'Cache-Control': 'max-age=0',
-	'Sec-Ch-Ua': '"Chromium",v="121", "Not A(Brand",v="99"',
-	'Sec-Ch-Ua-Mobile': '?0',
-	'Sec-Ch-Ua-Platform': '"Linux"',
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0, Win64, x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.160 Safari/537.36',
+		'Sec-Fetch-Site': 'same-origin',
+		'Sec-Fetch-Mode': 'navigate',
+		'Sec-Fetch-User': '?1',
+		'Sec-Fetch-Dest': 'document',
+		'Cache-Control': 'max-age=0',
+		'Sec-Ch-Ua': '"Chromium",v="121", "Not A(Brand",v="99"',
+		'Sec-Ch-Ua-Mobile': '?0',
+		'Sec-Ch-Ua-Platform': '"Linux"',
 };
 
-export async function doGet(url: string, _headers?: HeadersInit) {
-	return fetch(url, { method: 'GET', headers: _headers || headers });
+export async function doGet(url: string) {
+	return fetch(url, { method: 'GET', headers: {...headers, Referer: url} });
 }
 
-export async function doPost(url: string, body: string, _headers?: HeadersInit) {
+export async function doPost(url: string, body: string) {
 	if (!cookie) {
 		console.log('Post must note be request before collecting a cookie');
 		return null;
 	}
 
-	return fetch(url, { body, method: 'POST', headers: _headers || { ...headers, 'Content-Type': 'application/x-www-form-urlencoded' } });
+	return fetch(url, { body, method: 'POST', headers: { ...headers, Referer: url,  'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 
 export async function preProcessResponse(response: Response, $: CheerioAPI) {
