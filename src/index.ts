@@ -16,6 +16,17 @@ import { resseguroConfig, seguroConfig } from './configs';
 
 export default {
 	async fetch(request): Promise<Response> {
+
+		if (request.method === 'OPTIONS') { 
+			return new Response(null, {
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+					'Access-Control-Allow-Headers': '*',
+				},
+			});
+		}
+		
 		let response = new Response('Invalid endpoint', { status: 404 });
 		
 		console.log('Request received: ', request.url, request.method);
