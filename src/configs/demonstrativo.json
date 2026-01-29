@@ -788,15 +788,15 @@
     "type": [
         {
             "code": "33",
-            "name": "Individuais Anuais"
+            "value": "Individuais Anuais"
         },
         {
             "code": "34",
-            "name": "Individuais Intermediárias"
+            "value": "Individuais Intermediárias"
         },
         {
             "code": "35",
-            "name": "Consolidadas"
+            "value": "Consolidadas"
         }
     ]
 }
