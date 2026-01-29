@@ -1,5 +1,6 @@
 import _resseguroConfig from './resseguro.json';
 import _seguroConfig from './seguro.json';
+import _demonstraticoConfig from './demonstrativo.json'
 
 export const resseguroConfig: ResseguroConfig = {
   companies: _resseguroConfig.companies,
@@ -16,3 +17,15 @@ export const seguroConfig: SeguroConfig = {
       value: type.value,
     }))
 };
+
+const corrente = new Date().getFullYear(); // 2026
+const anoFinal = corrente - 1;
+
+export const demonstracaoConfig: DemonstrativoConfig = {
+  entities: _demonstraticoConfig.entity,
+  types: _demonstraticoConfig.type,
+  years: Array.from(
+    { length: anoFinal - _demonstraticoConfig.year + 1 },
+    (_, i) => _demonstraticoConfig.year + i
+  );
+}

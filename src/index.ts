@@ -54,6 +54,10 @@ export default {
 			}
 		}
 
+		else if (url.pathname == '/demonstrativo') 
+			if (request.method === 'GET') 
+				response = new Response(JSON.stringify({ ...seguroConfig }));
+
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Methods', '*'); // Allowed methods
 		response.headers.set('Access-Control-Allow-Headers', '*'); // Allow all origins (for testing, be specific in production)
