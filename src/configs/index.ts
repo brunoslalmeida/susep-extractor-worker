@@ -18,11 +18,12 @@ export const seguroConfig: SeguroConfig = {
 	})),
 };
 
-const YEAR = 2011
+const YEAR = 2011;
 const length = Math.max(0, new Date().getFullYear() - YEAR);
+const years = Array.from({ length }, (_, i) => YEAR + i);
 
 export const demonstracaoConfig: DemonstrativoConfig = {
 	entities: _demonstraticoConfig.entity,
 	types: _demonstraticoConfig.type,
-	years: Array.from({ length }, (_, i) => YEAR + i),
+	years,
 };
