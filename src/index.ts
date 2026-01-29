@@ -12,7 +12,7 @@
  */
 
 import { getResseguroReport, getSeguroReport } from './api';
-import { resseguroConfig, seguroConfig } from './configs';
+import { resseguroConfig, seguroConfig, demonstracaoConfig } from './configs';
 
 export default {
 	async fetch(request): Promise<Response> {
@@ -56,7 +56,7 @@ export default {
 
 		else if (url.pathname == '/demonstrativo') 
 			if (request.method === 'GET') 
-				response = new Response(JSON.stringify({ ...seguroConfig }));
+				response = new Response(JSON.stringify({ ...demonstracaoConfig }));
 
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
 		response.headers.set('Access-Control-Allow-Methods', '*'); // Allowed methods
