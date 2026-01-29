@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.8.22",
-    "@cloudflare/workers-types": "^4.20250109.0",
-    "typescript": "^5.5.2",
+    "@cloudflare/workers-types": "^4.20260129.0",
+    "typescript": "^5.9.3",
     "vitest": "^2.1.9",
-    "wrangler": "^4.13.2"
+    "wrangler": "^4.61.0"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

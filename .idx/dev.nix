@@ -1,41 +1,40 @@
 { pkgs, ... }: {
-  # Pacotes do canal estável
+  # 1. Configurações Globais do Ambiente
   channel = "stable-23.11";
 
   packages = [
-    pkgs.nodejs_20           # Node.js estável para Workers
-    pkgs.nodePackages.pnpm   # Opcional, mas recomendado para performance
-    pkgs.wrangler            # CLI oficial da Cloudflare
+    pkgs.nodejs_20
+    pkgs.nodePackages.pnpm
+    pkgs.wrangler
   ];
 
-  # Variáveis de ambiente úteis
   env = {
     NODE_VERSION = "20";
   };
 
+  # 2. Configurações específicas da IDE IDX
   idx = {
-    # Extensões úteis para Cloudflare e Firebase
     extensions = [
-      "cloudflare.wrangler-vscode" # Suporte nativo ao wrangler
-      "googlecloudcompute.cloudcode" # Útil para integrações Google/Firebase
-      "esbenp.prettier-vscode"      # Padronização de código
+      "cloudflare.wrangler-vscode"
+      "googlecloudcompute.cloudcode"
+      "esbenp.prettier-vscode"
     ];
 
-    # Previews no navegador dentro do IDX
-    previews = {
-      enable = true;
-      previews = {
-        web = {
-          # Executa o worker localmente
-          command = ["wrangler", "dev", "--port", "$PORT", "--ip", "0.0.0.0"];
-          manager = "web";
-        };
+    # É AQUI que o onCreate deve morar:
+    workspace = {
+      onCreate = {
+        npm-install = "npm install";
       };
     };
 
-    # Ciclo de vida: Instala dependências automaticamente ao criar o ambiente
-    onCreate = {
-      npm-install = "npm install";
+    previews = {
+      enable = false;
+      previews = {
+        web = {
+          command = [ "wrangler" "dev" "--config" "wrangler.json" "--port" "$PORT" "--ip" "0.0.0.0" ];
+          manager = "web";
+        };
+      };
     };
   };
 }
