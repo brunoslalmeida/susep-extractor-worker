@@ -27,5 +27,5 @@ export const demonstracaoConfig: DemonstrativoConfig = {
   years: Array.from(
     { length: anoFinal - _demonstraticoConfig.year + 1 },
     (_, i) => _demonstraticoConfig.year + i
-  );
+  )
 }
