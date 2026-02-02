@@ -17,7 +17,7 @@ import { resseguroConfig, seguroConfig, demonstracaoConfig } from './configs';
 export default {
 	async fetch(request): Promise<Response> {
 
-		if (request.method === 'OPTIONS') { 
+		if (request.method === 'OPTIONS') {
 			return new Response(null, {
 				headers: {
 					'Access-Control-Allow-Origin': '*',
@@ -26,14 +26,14 @@ export default {
 				},
 			});
 		}
-		
+
 		let response = new Response('Invalid endpoint', { status: 404 });
-		
+
 		console.log('Request received: ', request.url, request.method);
-		
+
 		const url = new URL(request.url);
 		if (url.pathname == '/resseguro') {
-			if (request.method === 'GET') 
+			if (request.method === 'GET')
 				response = new Response(JSON.stringify({ ...resseguroConfig }));
 
 			if (request.method === 'POST') {
@@ -44,7 +44,7 @@ export default {
 		}
 
 		else if (url.pathname == '/seguro') {
-			if (request.method === 'GET') 
+			if (request.method === 'GET')
 				response = new Response(JSON.stringify({ ...seguroConfig }));
 
 			if (request.method === 'POST') {
@@ -54,8 +54,8 @@ export default {
 			}
 		}
 
-		else if (url.pathname == '/demonstrativo') 
-			if (request.method === 'GET') 
+		else if (url.pathname == '/demonstrativo')
+			if (request.method === 'GET')
 				response = new Response(JSON.stringify({ ...demonstracaoConfig }));
 
 		response.headers.set('Access-Control-Allow-Origin', '*'); // Allow all origins (for testing, be specific in production)
